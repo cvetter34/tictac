@@ -10,6 +10,11 @@ $ ->
     $('#gameboard').hide()
     $('#start-game').fadeIn(500)
 
+  setClass = (el, mark) ->
+      el.removeClass 'o'
+      el.removeClass 'x'
+      el.addClass mark
+
   checkForWin = () ->
     board = ($('.board-cell').map (idx, el) ->
       $(el).text()
