@@ -39,7 +39,7 @@ $ ->
       resetboard()
 
   $('#start-game').on 'click', (e) ->
-    clearboard()
+    clearBoard()
     $(@).hide()
     $('#gameboard').fadeIn(500)
 
@@ -48,5 +48,5 @@ $ ->
     if ( $(@).text().replace /^\s+|\s+$/g, "" ) == ''
       $(@).text mark
       $(@).addClass mark
-      isx = !isX
+      isX = !isX
       checkForWin()

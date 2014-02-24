@@ -24,17 +24,17 @@
       }
     };
     $('#start-game').on('click', function(e) {
-      clearboard();
+      clearBoard();
       $(this).hide();
       return $('#gameboard').fadeIn(500);
     });
     return $('.board-cell').on('click', function(e) {
-      var isx, mark;
+      var mark;
       mark = isX ? 'x' : 'o';
       if (($(this).text().replace(/^\s+|\s+$/g, "")) === '') {
         $(this).text(mark);
         $(this).addClass(mark);
-        isx = !isX;
+        isX = !isX;
         return checkForWin();
       }
     });
