@@ -42,6 +42,7 @@ $ ->
       alert win + ' won!'
       resetGame()
 
+
   markCell = (cell, mark) ->
     cell.text mark
     cell.addClass mark
