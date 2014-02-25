@@ -39,9 +39,11 @@ $ ->
       win = board[p[0]] if '' != board[p[0]] == board[p[1]] == board[p[2]]
 
     if win != ''
-      alert win + ' won!'
+      alert win + ' Won!'
       resetGame()
-
+    else if counter > 8
+      alert ' Tie game!'
+      resetGame()
 
   markCell = (cell, mark) ->
     cell.text mark

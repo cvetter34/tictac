@@ -39,7 +39,10 @@
         }
       }
       if (win !== '') {
-        alert(win + ' won!');
+        alert(win + ' Won!');
+        return resetGame();
+      } else if (counter > 8) {
+        alert(' Tie game!');
         return resetGame();
       }
     };
