@@ -33,7 +33,7 @@ class BoardCtrl
     @$scope.cells = {}
 
   announceWinner: =>
-    winner = if @$scope.cells % 2 == 0 then 'o' else 'x'
+    winner = if Object.keys(@$scope.cells).length % 2 == 0 then 'o' else 'x'
     alert "#{winner} wins!"
 
   parseBoard: =>
