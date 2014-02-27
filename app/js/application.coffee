@@ -40,6 +40,8 @@ class BoardCtrl
     'xxx' == row || 'ooo' == row
 
   resetBoard: =>
+    @$scope.theWinnerIs = false
+    @$scope.cats = false
     @cells = @$scope.cells = {}
     @getPatterns()
 
