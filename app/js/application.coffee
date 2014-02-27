@@ -86,7 +86,7 @@ class BoardCtrl
 
   announceWinner: =>
     winner = @player(whoMovedLast: true)
-    alert "#{winner} wins!"
+    @$scope.theWinnerIs = winner
     @resetBoard()
 
   announceTie: =>
