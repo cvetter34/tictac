@@ -23,7 +23,6 @@ class BoardCtrl
 
   startGame: =>
     @$scope.gameOn = true
-    @$scope.currentPlayer = @player()
     @resetBoard()
 
   getPatterns: =>
@@ -43,8 +42,8 @@ class BoardCtrl
     @$scope.theWinnerIs = false
     @$scope.cats = false
     @cells = @$scope.cells = {}
-    @$scope.currentPlayer = @player()
     @getPatterns()
+    @$scope.currentPlayer = @player()
 
   numberOfMoves: =>
     Object.keys(@cells).length
@@ -65,7 +64,7 @@ class BoardCtrl
     if moves % 2 == 0 then 'x' else 'o'
 
   isMixedRow: (row) ->
-    !!row.match(/ox\d|o\dx|\dox|xo\d|x\do|\dxo|xxo|xox|oxx|oox|oxo|xoo/i)
+    !!row.match(/o+\d?x+|x+\d?o+/i)
 
   hasOneX: (row) ->
     !!row.match(/x\d\d|\dx\d|\d\dx/i)
@@ -116,12 +115,11 @@ class BoardCtrl
       @announceTie()
 
   mark: (@$event) =>
-    if @$scope.gameOn
-      cell = @$event.target.dataset.index
+    cell = @$event.target.dataset.index
+    if @$scope.gameOn and !@cells[cell]
       @cells[cell] = @player()
       @parseBoard()
       @$scope.currentPlayer = @player()
-
 
 BoardCtrl.$inject = ["$scope", "WIN_PATTERNS"]
 ticTacToe.controller "BoardCtrl", BoardCtrl
