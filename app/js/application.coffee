@@ -18,6 +18,8 @@ class BoardCtrl
   constructor: (@$scope, @WIN_PATTERNS) ->
     @resetBoard()
     @$scope.mark = @mark
+    @$scope.startGame = @startGame
+    @$scope.gameOn = false
 
   getPatterns: =>
     @patternsToTest = @WIN_PATTERNS.filter -> true
