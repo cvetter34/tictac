@@ -87,3 +87,9 @@ h1 {
 
 .win   { color: hsla( 2, 64.7%, 50.0%, 1 ); }
 .unwin { color: hsla( 0,  0.0%, 80.0%, 1 ); }
+
+.message {
+  font-size: 40px;
+  text-transform: uppercase;
+  text-align: center;
+}
