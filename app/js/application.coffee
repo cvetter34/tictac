@@ -20,11 +20,13 @@ class BoardCtrl
     @$scope.mark = @mark
     @$scope.startGame = @startGame
     @$scope.gameOn = false
-    @dbRef = new Firebase "https://vetter.firebaseio.com/"
-    @$db = @$firebase @dbRef
+
+  uniqueId: (length = 8) ->
+    id = ""
+    id += Math.random().toString(36).substr(2) while id.length < length
+    id.substr 0, length
 
   startGame: =>
-    @$db.$add name: "Christian", iq: 300
     @$scope.gameOn = true
     @resetBoard()
 
@@ -45,8 +47,12 @@ class BoardCtrl
     @$scope.theWinnerIs = false
     @$scope.cats = false
     @cells = @$scope.cells = {}
-    @getPatterns()
+    @winningCells = @$scope.winningCells = {}
+    @id = @uniqueId()
+    @dbRef = new Firebase "https://vetter.firebaseio.com/#{@id}"
+    @db = @$firebase @dbRef
     @$scope.currentPlayer = @player()
+    @getPatterns()
 
   numberOfMoves: =>
     Object.keys(@cells).length
@@ -87,8 +93,10 @@ class BoardCtrl
   gameUnwinnable: =>
     @patternsToTest.length < 1
 
-  announceWinner: =>
-    winner = @player(whoMovedLast: true)
+  announceWinner: (winningPattern) =>
+    winner = @cells[winningPattern[0]]
+    for k, v of @cells
+      @winningCells[k] = if parseInt(k) in winningPattern then 'win' else 'unwin'
     @$scope.theWinnerIs = winner
     @$scope.gameOn = false
 
@@ -105,24 +113,26 @@ class BoardCtrl
     (@isEmptyRow(row) and @movesRemaining() < 5))
 
   parseBoard: =>
-    won = false
+    winningPattern = false
 
     @patternsToTest = @patternsToTest.filter (pattern) =>
       row = @getRow(pattern)
-      won ||= @someoneWon(row)
+      winningPattern ||= pattern if @someoneWon(row)
       @rowStillWinnable(row)
 
-    if won
-      @announceWinner()
+    if winningPattern
+      @announceWinner(winningPattern)
     else if @gameUnwinnable()
       @announceTie()
 
   mark: (@$event) =>
     cell = @$event.target.dataset.index
-    if @$scope.gameOn and !@cells[cell]
+    if @$scope.gameOn && !@cells[cell]
       @cells[cell] = @player()
+      @db.$set board: @cells
       @parseBoard()
       @$scope.currentPlayer = @player()
+
 
 BoardCtrl.$inject = ["$scope", "WIN_PATTERNS", "$firebase"]
 ticTacToe.controller "BoardCtrl", BoardCtrl
