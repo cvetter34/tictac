@@ -27,8 +27,14 @@ class BoardCtrl
     id.substr 0, length
 
   startGame: =>
-    @$scope.gameOn = true
     @resetBoard()
+    @unbind() if @unbind
+    @id = @uniqueId()
+    @dbRef = new Firebase "https://vetter.firebaseio.com/#{@id}"
+    @db = @$firebase @dbRef
+    @db.$bind( @$scope, 'cells' ).then (unbind) =>
+      @unbind = unbind
+      @$scope.gameOn = true
 
   getPatterns: =>
     @patternsToTest = @WIN_PATTERNS.filter -> true
@@ -48,13 +54,6 @@ class BoardCtrl
     @$scope.cats = false
     @cells = @$scope.cells = {}
     @winningCells = @$scope.winningCells = {}
-
-    @unbind() if @unbind
-    @id = @uniqueId()
-    @dbRef = new Firebase "https://vetter.firebaseio.com/#{@id}"
-    @db = @$firebase @dbRef
-    @db.$bind( @$scope, 'cells' ).then (unbind) => @unbind = unbind
-
     @$scope.currentPlayer = @player()
     @getPatterns()
 
