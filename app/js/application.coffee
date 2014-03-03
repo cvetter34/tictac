@@ -48,9 +48,13 @@ class BoardCtrl
     @$scope.cats = false
     @cells = @$scope.cells = {}
     @winningCells = @$scope.winningCells = {}
+
+    @unbind() if @unbind
     @id = @uniqueId()
     @dbRef = new Firebase "https://vetter.firebaseio.com/#{@id}"
     @db = @$firebase @dbRef
+    @db.$bind( @$scope, 'cells' ).then (unbind) => @unbind = unbind
+
     @$scope.currentPlayer = @player()
     @getPatterns()
 
@@ -129,7 +133,6 @@ class BoardCtrl
     cell = @$event.target.dataset.index
     if @$scope.gameOn && !@cells[cell]
       @cells[cell] = @player()
-      @db.$set board: @cells
       @parseBoard()
       @$scope.currentPlayer = @player()
 
