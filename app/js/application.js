@@ -47,15 +47,25 @@
 
     BoardCtrl.prototype.startGame = function() {
       this.resetBoard();
-      if (this.unbind) {
-        this.unbind();
+      if (this.unbindPlayer) {
+        this.unbindPlayer();
+      }
+      if (this.unbindBoard) {
+        this.unbindBoard();
       }
       this.id = this.uniqueId();
       this.dbRef = new Firebase("https://vetter.firebaseio.com/" + this.id);
-      this.db = this.$firebase(this.dbRef);
-      return this.db.$bind(this.$scope, 'cells').then((function(_this) {
+      this.db = this.$firebase(this.dbRef.child('board'));
+      this.db.$bind(this.$scope, 'cells').then((function(_this) {
         return function(unbind) {
-          _this.unbind = unbind;
+          _this.unbindPlayer = unbind;
+          return _this.$scope.gameOn = true;
+        };
+      })(this));
+      this.dbplayer = this.$firebase(this.dbRef.child('players'));
+      return this.dbplayer.$bind(this.$scope, 'currentPlayer').then((function(_this) {
+        return function(unbind) {
+          _this.unbindBoard = unbind;
           return _this.$scope.gameOn = true;
         };
       })(this));
