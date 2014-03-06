@@ -61,6 +61,7 @@ class BoardCtrl
     @unbindCells() if @unbindCells
     @scope.cells = {}
     @scope.winningCells = {}
+    @scope.theWinnerIs = null
 
   startGame: =>
     @resetBoard()

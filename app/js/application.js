@@ -92,7 +92,8 @@
         this.unbindCells();
       }
       this.scope.cells = {};
-      return this.scope.winningCells = {};
+      this.scope.winningCells = {};
+      return this.scope.theWinnerIs = null;
     };
 
     BoardCtrl.prototype.startGame = function() {
